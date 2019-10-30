@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.smbms.dao.provider.ProviderDao">
+    <!--增加供应商-->
+    <insert id="add" parameterType="Provider">
+        INSERT INTO smbms_provider(proCode, proName, proDesc, proContact, proPhone, proAddress, proFax, createdBy, creationDate)
+        VALUES (#{proCode},#{proName},#{proDesc},#{proContact},#{proPhone},#{proAddress},#{proFax},#{createdBy},#{creationDate})
+    </insert>
+    <!--通过供应商名称、编码获取供应商列表-模糊查询-providerList-->
+    <select id="getProviderList" resultType="Provider">
+        SELECT * FROM smbms_provider
+        WHERE proCode LIKE  CONCAT('%',#{proCode} ,'%') AND proName LIKE  CONCAT('%',#{proName} ,'%')
+    </select>
+    <!--通过proId删除Provider-->
+    <delete id="deleteProviderById">
+        DELETE FROM smbms_provider WHERE id = #{delId}
+    </delete>
+    <!--通过proId获取Provider-->
+    <select id="getProviderById" resultType="Provider">
+        SELECT * FROM smbms_provider WHERE id = #{id}
+    </select>
+    <!--修改用户信息-->
+    <update id="modify" parameterType="Provider">
+        UPDATE smbms_provider
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="proCode!=null and proCode!=''">proCode = #{proCode},</if>
+            <if test="proName!=null and proName!=''">proName = #{proName},</if>
+            <if test="proDesc!=null and proDesc!=''">proDesc = #{proDesc},</if>
+            <if test="proContact!=null and proContact!=''">proContact = #{proContact},</if>
+            <if test="proPhone!=null and proPhone!=''">proPhone = #{proPhone},</if>
+            <if test="proAddress!=null and proAddress!=''">proAddress = #{proAddress},</if>
+            <if test="proFax!=null and proFax!=''">proFax = #{proFax},</if>
+            <if test="modifyBy!=null and modifyBy!=''">modifyBy = #{modifyBy},</if>
+            <if test="modifyDate!=null and modifyDate!=''">modifyDate = #{modifyDate},</if>
+        </trim>
+        WHERE id = #{id}
+    </update>
+</mapper>
